@@ -12,6 +12,10 @@ def create_app():
     def index():
         return render_template('index.html')
 
+    @app.route('/messages')
+    def messages():
+        return render_template('messages.html')
+
     app.register_blueprint(account)
 
     socketio.init_app(app)

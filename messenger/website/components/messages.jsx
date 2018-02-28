@@ -3,4 +3,9 @@ import ReactDOM from 'react-dom';
 import axios from 'axios';
 import io from 'socket.io-client';
 
-console.log('hello');
+import Conversation from './conversation/conversation.jsx';
+
+ReactDOM.render(
+  <Conversation />,
+  document.getElementById('react-container')
+);

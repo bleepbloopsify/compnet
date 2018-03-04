@@ -27,7 +27,7 @@ class User(TrackingModel):
         return data
 
 class Verified(TrackingModel):
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), unique=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), unique=True, nullable=False)
     user = db.relationship('User', back_populates='verified')
 
     def serialize(self):

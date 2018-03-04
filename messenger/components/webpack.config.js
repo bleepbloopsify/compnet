@@ -15,7 +15,7 @@ module.exports = {
   },
   plugins:[
     new webpack.DefinePlugin({
-      API_URL: "'" + (process.env.API_URL || 'https://api.website.com') + "'",
+      SOCKET_URI: "'" + (process.env.SOCKET_URI) + "'",
     }),
     new webpack.DllReferencePlugin({
       manifest: path.resolve(SOURCE_DIR, 'manifest.json'), // ok maybe this is ok

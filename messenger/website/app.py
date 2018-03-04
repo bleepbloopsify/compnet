@@ -1,8 +1,9 @@
-from flask import Flask, render_template
+from os import environ as env
+from flask import Flask, render_template, session, g
 from sqlalchemy_utils import create_database, database_exists
 from flask_migrate import Migrate
 
-from database import db
+from database import db, User
 from sockets import socketio
 
 from .account import account, login_required
@@ -10,6 +11,14 @@ from .account import account, login_required
 def create_app():
 
     app = Flask(__name__)
+    app.secret_key = env.get('SESSION_SECRET_KEY') or 'keyboard cat'
+
+    @app.before_request
+    def load_user():
+        if 'user_id' in session:
+            user = User.query.get(session['user_id'])
+            if user:
+                g.user = user
 
     @app.route('/')
     def index():

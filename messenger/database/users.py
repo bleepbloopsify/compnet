@@ -13,9 +13,7 @@ class User(TrackingModel):
     def lean(self):
         base = super().serialize()
         data = {
-            'email': self.email,
             'display_name': self.display_name,
-            'is_admin': self.is_admin,
         }
         data.update(base)
         return data
@@ -23,13 +21,13 @@ class User(TrackingModel):
     def serialize(self):
         base = self.lean()
         data = {
-
+            'email': self.email,
         }
         data.update(base)
         return data
 
 class Verified(TrackingModel):
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), unique=True)
     user = db.relationship('User', back_populates='verified')
 
     def serialize(self):

@@ -7,7 +7,7 @@ from database import db, User
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        if not session['user']:
+        if not g.user:
             return redirect(url_for('account.login'))
         return f(*args, **kwargs)
     return decorated_function
@@ -30,7 +30,7 @@ def signup():
         new_user = User(email=request.form['email'].lower().strip(), passhash=passhash, display_name=request.form['display_name'].strip())
         db.session.add(new_user)
         db.session.commit()
-        session['user'] = new_user.serialize()
+        session['user_id'] = new_user.id
         return redirect(url_for('messages'))
     except:
         flash("Signup Error: A user with that email or name already exists")
@@ -47,13 +47,12 @@ def login():
     if not all(field in request.form for field in fields) or not all(fields):
         return abort(401)
 
-
     user = User.query.filter(User.email == request.form['email']).first()
     if not user:
         flash('Invalid credentials')
         return render_template('login.html')
     if checkpw(request.form['password'].encode('utf-8'), user.passhash.encode('utf-8')):
-        session['user'] = user.serialize()
+        session['user_id'] = user.id
         return redirect('/')
     else:
         flash('Invalid credentials')
@@ -62,6 +61,6 @@ def login():
 @login_required
 @account.route('/logout')
 def logout():
-    del session['user']
+    del session['user_id']
     return redirect('/')
 

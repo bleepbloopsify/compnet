@@ -7,6 +7,7 @@ from database import db, User
 from sockets import socketio
 
 from .account import account, login_required
+from .conversations import conversations
 
 def create_app():
 
@@ -30,6 +31,7 @@ def create_app():
         return render_template('messages.html')
 
     app.register_blueprint(account)
+    app.register_blueprint(conversations, url_prefix='/conversations')
 
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SQLALCHEMY_DATABASE_URI'] = db_url = "mysql+pymysql://test:t3stp@ss@0.0.0.0/messenger"

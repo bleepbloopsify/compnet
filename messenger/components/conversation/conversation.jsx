@@ -29,13 +29,9 @@ export default class Conversation extends React.Component {
 
     socket.on('connect', () => {
       socket.emit('join_conversation', this.props.conversation.id);
-      socket.emit('new_message', this.props.conversation.id, 'hello');
     });
 
     socket.on('new_message', (msg) => {
-      console.log("New message!");
-      console.log(msg);
-      console.log(this.state.messages);
       this.setState({
         messages: [...this.state.messages, msg],
       });

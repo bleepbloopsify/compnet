@@ -34,7 +34,7 @@ def create_app():
     app.register_blueprint(conversations, url_prefix='/conversations')
 
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['SQLALCHEMY_DATABASE_URI'] = db_url = "mysql+pymysql://test:t3stp@ss@0.0.0.0/messenger"
+    app.config['SQLALCHEMY_DATABASE_URI'] = db_url = env.get('DATABASE_URI') or "mysql+pymysql://test:t3stp@ss@0.0.0.0/messenger"
 
     db.init_app(app)
     if not database_exists(db_url):

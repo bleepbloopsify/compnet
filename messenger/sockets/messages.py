@@ -16,13 +16,11 @@ def disconnected():
 def new_message(conversation_id, text):
     print('Received Message ' + text)
     emit('new_message', { 'text': text }, room=conversation_id)
-    # conversation = Conversation.query.get(conversation_id)
-    # new_message = Message(text=text, conversation=conversation)
-    #
-    #
-    # emit('new_message', message.lean(), room=conversation_id)
+    conversation = Conversation.query.get(conversation_id)
+    new_message = Message(text=text, conversation=conversation)
+
+    emit('new_message', message.lean(), room=conversation_id)
 
 @socketio.on('join_conversation', namespace='/messages')
 def join_conversation(id):
     join_room(id)
-    print(id)

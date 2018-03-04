@@ -1,8 +1,8 @@
 const webpack = require('webpack');
 const path = require('path');
 
-const SOURCE_DIR = 'components';
-const DIST_DIR = 'static/dist';
+const SOURCE_DIR = './';
+const DIST_DIR = '../website/static/dist';
 
 module.exports = {
   entry: {

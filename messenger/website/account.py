@@ -18,7 +18,7 @@ account = Blueprint('account', __name__)
 def signup():
 
     if request.method == 'GET':
-        return render_template('signup.html')
+        return render_template('account/signup.html')
 
     fields = ['email', 'password', 'display_name']
     if not all(field in request.form for field in fields) or not all(fields):
@@ -31,17 +31,17 @@ def signup():
         db.session.add(new_user)
         db.session.commit()
         session['user'] = new_user.serialize()
-        return redirect('/')
+        return redirect(url_for('messages'))
     except:
         flash("Signup Error: A user with that email or name already exists")
-        return render_template('signup.html')
+        return render_template('account/signup.html')
 
 
 @account.route('/login', methods=['GET', 'POST'])
 def login():
 
     if request.method == 'GET':
-        return render_template('login.html')
+        return render_template('account/login.html')
 
     fields = ['email', 'password']
     if not all(field in request.form for field in fields) or not all(fields):
@@ -57,7 +57,7 @@ def login():
         return redirect('/')
     else:
         flash('Invalid credentials')
-        return render_template('login.html')
+        return render_template('account/login.html')
 
 @login_required
 @account.route('/logout')

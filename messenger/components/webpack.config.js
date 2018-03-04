@@ -1,13 +1,13 @@
 const webpack = require('webpack');
 const path = require('path');
 
-const SOURCE_DIR = "components";
-const DIST_DIR = "static/dist";
+const SOURCE_DIR = "./";
+const DIST_DIR = "../website/static/dist";
 
 module.exports = {
   cache: true,
   entry: {
-      'messages': path.resolve(SOURCE_DIR, 'messages.jsx'),
+      'messages': path.resolve(SOURCE_DIR, 'messages/messages.jsx'),
   },
   output: {
     filename: '[name].bundle.js',
@@ -15,7 +15,7 @@ module.exports = {
   },
   plugins:[
     new webpack.DefinePlugin({
-      API_URL: "'" + (process.env.API_URL || 'http://poolniggas.com') + "'",
+      API_URL: "'" + (process.env.API_URL || 'https://api.website.com') + "'",
     }),
     new webpack.DllReferencePlugin({
       manifest: path.resolve(SOURCE_DIR, 'manifest.json'), // ok maybe this is ok

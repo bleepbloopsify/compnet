@@ -24,12 +24,12 @@ mysql < ./creds.sql
 systemctl start mysql
 
 rm /etc/systemd/system/messenger-webpack.service
-ln -s $(pwd)/messenger-webpack.service /etc/systemd/system/
-systemctl enable poolniggas-webpack
+ln -s $(pwd)/services/messenger-webpack.service /etc/systemd/system/
+systemctl enable messenger-webpack
 
 rm /etc/nginx/sites-available/messenger
-ln -s $(pwd)/poolniggas.nginx /etc/nginx/sites-available/poolniggas
+ln -s $(pwd)/services/messenger.nginx /etc/nginx/sites-available/messenger
 rm /etc/nginx/sites-enabled/messenger
-ln -s $(pwd)/poolniggas.nginx /etc/nginx/sites-enabled/poolniggas
+ln -s $(pwd)/messenger.nginx /etc/nginx/sites-enabled/messenger
 
 systemctl restart nginx

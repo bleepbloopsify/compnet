@@ -27,6 +27,10 @@ rm /etc/systemd/system/messenger-webpack.service
 ln -s $(pwd)/services/messenger-webpack.service /etc/systemd/system/
 systemctl enable messenger-webpack
 
+rm /etc/systemd/system/messenger-website.service
+ln -s $(pwd)/services/messenger-website.service /etc/systemd/system/
+systemctl enable messenger-website
+
 rm /etc/nginx/sites-available/messenger
 ln -s $(pwd)/services/messenger.nginx /etc/nginx/sites-available/messenger
 rm /etc/nginx/sites-enabled/messenger

@@ -10,13 +10,14 @@ apt update -y
 apt install -y software-properties-common
 apt install -y python3-venv python3-pip python3-dev
 apt install -y nginx gunicorn3
-
+apt install -y certbot python-certbot-nginx
 apt install -y nodejs yarn
 
 # certbot --nginx # certonly to renew
 # this will also install a cronjob to renew by default
 
 pip3 install -r requirements.txt
+pip3 install eventlet # necessary for gunicorn to run flask_socketio
 
 apt install -y mariadb-server
 

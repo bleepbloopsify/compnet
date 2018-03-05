@@ -1,3 +1,5 @@
+from uuid import uuid4
+
 from . import db
 from .tracking import TrackingModel
 
@@ -14,7 +16,6 @@ class Message(TrackingModel):
     def serialize(self):
         base = self.lean()
         data = {
-            'user': self.user.lean(),
             'conversation': self.conversation.lean()
         }
         data.update(base)
@@ -23,6 +24,7 @@ class Message(TrackingModel):
     def lean(self):
         base = super().serialize()
         data = {
+            'user': self.user.lean(),
             'text': self.text,
         }
         data.update(base)
@@ -35,11 +37,18 @@ conversations_to_users = db.Table('conversations_to_users',
 
 class Conversation(TrackingModel):
 
+    display_name = db.Column(db.Text, default=lambda: str(uuid4()))
+
     users = db.relationship('User', secondary=conversations_to_users, lazy='subquery', backref=db.backref('conversations', lazy=True))
     messages = db.relationship('Message')
 
     def lean(self):
-        return super().serialize()
+        base = super().serialize()
+        data = {
+            'display_name': str(self.display_name),
+        }
+        data.update(base)
+        return data
 
     def serialize(self):
         base = self.lean()

@@ -8,46 +8,19 @@ import './conversation.scss';
 export default class Conversation extends React.Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      messages: [],
-      socket: io('/messages'),
-    };
-  }
-
-  componentDidMount() {
-    axios.get(`/conversations/${this.props.conversation.id}/messages`)
-    .then(({data}) => {
-      this.setState({
-        messages: data
-      });
-    });
-    let socket = this.state.socket;
-
-    socket.on('connect', () => { console.log('Connected to server!'); });
-    socket.on('disconnect', () => { console.log('Disconnected from server!'); });
-
-    socket.on('connect', () => {
-      socket.emit('join_conversation', this.props.conversation.id);
-    });
-
-    socket.on('new_message', (msg) => {
-      this.setState({
-        messages: [...this.state.messages, msg],
-      });
-    });
   }
 
   render() {
+    console.log(this.props.conversation);
     return (
       <div>
         <div className="container">
-          <Messages messages={this.state.messages} />
+          <Messages messages={this.props.messages} />
         </div>
         <div className="container">
           <div className="row">
-            <div className="col-xs-12">
-              <NewMessage conversation={this.props.conversation} socket={this.state.socket} />
+            <div className="col-md-12">
+              <NewMessage conversation={this.props.conversation} socket={this.props.socket} />
             </div>
           </div>
         </div>
@@ -76,11 +49,13 @@ class Messages extends React.Component {
 
 class Message extends React.Component {
   render() {
-    console.log('rerender');
     return (
       <div className="row">
         <div className="col-md-4">
-          {this.props.message.text}
+          <div className="message">
+            <span className="display_name">{this.props.message.user.display_name}</span>
+            <span className="message-body">{this.props.message.text}</span>
+          </div>
         </div>
       </div>
     );

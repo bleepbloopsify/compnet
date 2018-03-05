@@ -8,12 +8,13 @@ conversations = Blueprint('conversations', __name__)
 
 @conversations.route('', methods=['POST'])
 def new_conversation():
-    data = request.get_json()
+    data = request.get_json() or request.values
+    print(data)
     new_conversation = Conversation()
-    fields = ['users']
+    fields = ['user_ids']
     if not all(field in data for field in fields) or not all(data[field] for field in fields):
-        return abort(401)
-    for user_id in data['users']:
+        return abort(422) # unprocessable entity
+    for user_id in data['user_ids']:
         user = User.query.get(user_id)
         if user:
             new_conversation.users.append(user)
@@ -43,6 +44,5 @@ def individual(id):
 
 @conversations.route('/<id>/messages', methods=['GET'])
 def messages(id):
-    return jsonify([])
     conversation = Conversation.query.get_or_404(id)
-    return jsonify([m.serialize() for m in conversation.messages()])
+    return jsonify([m.lean() for m in conversation.messages])

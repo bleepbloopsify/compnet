@@ -5,4 +5,4 @@ app = create_app()
 
 if __name__ == '__main__':
 
-    socketio.run(app, port=9999, debug=True)
+    socketio.run(app, port=8989, debug=True)

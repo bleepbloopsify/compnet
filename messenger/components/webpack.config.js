@@ -7,7 +7,7 @@ const DIST_DIR = "../website/static/dist";
 module.exports = {
   cache: true,
   entry: {
-      'messages': path.resolve(SOURCE_DIR, 'messages/messages.jsx'),
+      'messages': path.resolve(SOURCE_DIR, 'messages'),
   },
   output: {
     filename: '[name].bundle.js',

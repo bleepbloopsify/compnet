@@ -17,10 +17,7 @@ class App extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
-  console.log('hello');
-  return {
-    test: 'hello',
-  }
+  return {};
 }
 
 export default connect(mapStateToProps, null)(App)

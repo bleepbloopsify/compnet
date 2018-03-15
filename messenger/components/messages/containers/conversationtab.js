@@ -4,22 +4,23 @@ import { connect } from 'react-redux';
 import ConversationSidebar from '../components/conversationtab';
 
 import ConversationRow from './conversationrow';
+import ModalRoot from './modalroot';
+
+import { openCreateConversationModal } from '../actions';
 
 class ConversationTab extends React.Component {
-  constructor(props) {
-    super(props);
-
-  }
-
   render() {
     let { conversations } = this.props;
+    let { openModal } = this.props;
 
     let sidebarContent = (
       <div className="list-group list-group-flush">
+        <button className="list-group-item" onClick={openModal}>
+          Create Conversation <i className="fa fa-plus" />
+        </button>
         {Object.values(conversations).map(conversation =>
           <ConversationRow key={conversation.id}
-          {...conversation}
-          />
+            {...conversation} />
         )}
       </div>
     );
@@ -38,7 +39,7 @@ class ConversationTab extends React.Component {
            Hello
           </div>
         </ConversationSidebar>
-        <div className="modal goes here" />
+        <ModalRoot />
       </div>
     );
   }
@@ -50,9 +51,9 @@ const mapStateToProps = state => {
   };
 }
 
-const mapDispatchToProps = dipatch => {
+const mapDispatchToProps = dispatch => {
   return {
-
+    openModal: () => dispatch(openCreateConversationModal()),
   };
 }
 

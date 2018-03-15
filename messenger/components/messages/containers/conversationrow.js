@@ -34,7 +34,6 @@ const mapStateToProps = (state, props) => {
 const mapDispatchToProps = (dispatch, props) => {
   return {
     onClick: () => {
-      console.log('hello');
       dispatch(selectConversation(props.id))
     },
   };

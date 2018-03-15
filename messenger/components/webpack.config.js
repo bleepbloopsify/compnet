@@ -42,7 +42,7 @@ module.exports = {
         loader: 'babel-loader',
         include: path.resolve(SOURCE_DIR),
         query: {
-          presets: ['env', 'react']
+          presets: ['env', 'react', 'es2016', 'stage-3']
         }
       },
       {

@@ -19,8 +19,8 @@ class ConversationRow extends React.Component {
         }}>
           {display_name}
         </span>
-        <span className="badge badge-primary badge-pill">14</span>
       </button>
+      // <span className="badge badge-primary badge-pill">14</span>
     );
   }
 }

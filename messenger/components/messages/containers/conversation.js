@@ -12,6 +12,18 @@ class ConversationContainer extends React.Component {
 
     const { messages } = this.props;
 
+    if (messages == null) {
+      return (
+        <div className="container">
+          <div className="row">
+            <div className="col-md-10 col-lg-8 mx-auto">
+              <h3>Select or create a conversation on the side</h3>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div className="container">
         {Object.values(messages).map(message =>
@@ -27,13 +39,13 @@ class ConversationContainer extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    messages: state.selected.messages,
+    messages: state.messages,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    
+
   };
 };
 

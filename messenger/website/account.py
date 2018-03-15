@@ -14,6 +14,22 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
+def login_required_json(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'user_id' not in session:
+            return jsonify({
+                'success': False,
+                'error': 'User must be logged in',
+            })
+        if not g.user:
+            return jsonify({
+                'success': False,
+                'error': 'User must be logged in',
+            })
+        return f(*args, **kwargs)
+    return decorated_function
+
 account = Blueprint('account', __name__)
 
 @account.route("/signup", methods=['GET', 'POST'])

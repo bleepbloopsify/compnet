@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 
 import Searchbar from './searchbar';
 
@@ -7,12 +8,14 @@ export default class ConversationModal extends React.Component {
     super(props);
 
     this.state = {
-      added_users: []
+      added_users: [],
+      submitting: false,
     };
   }
   render() {
-    let { requestClose, users } = this.props;
-    let { added_users } = this.state;
+    let { users } = this.props;
+    let { requestClose } = this.props;
+    let { submitting, added_users } = this.state;
 
     return (
       <div className="modal-content">
@@ -38,6 +41,34 @@ export default class ConversationModal extends React.Component {
                   </button>
                 )}
               </div>
+            </div>
+            <div className="modal-footer">
+              <button type="button"
+                disabled={submitting}
+                onClick={() => {
+                  this.setState({
+                    submitting: true,
+                  });
+                  axios.post('/conversations', {
+                    user_ids: added_users
+                  }).then(({data}) => {
+                    this.setState({
+                      submitting: false
+                    });
+                    console.log(data);
+                  }).catch(() => {
+                    this.setState({
+                      submitting: false
+                    });
+                  });
+                }}
+                className="btn btn-primary">
+                {submitting
+                  ? <i className="fa fa-spinner fa-spin" />
+                  : <span>Create Conversation</span>
+                }
+              </button>
+              <button type="button" className="btn btn-secondary" onClick={requestClose}>Close</button>
             </div>
             <Searchbar
               list={users}

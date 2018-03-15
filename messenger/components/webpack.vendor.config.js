@@ -11,6 +11,10 @@ module.exports = {
       'react-dom',
       'axios',
       'socket.io-client',
+      'redux',
+      'react-redux',
+      'redux-thunk',
+      'redux-logger',
     ],
   },
   output: {
@@ -19,6 +23,11 @@ module.exports = {
     library: 'vendor', // must match name apparently
   },
   plugins: [
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify('production'),
+      },
+    }),
     new webpack.optimize.UglifyJsPlugin({
       beautify: false, // lets keep that shit small
       comments: false, // lmao no

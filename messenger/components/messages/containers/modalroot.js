@@ -14,7 +14,8 @@ class ModalRoot extends React.Component {
     return (
       <div>
         <Modal isOpen={open}
-          className="Modal_Bootstrap modal-dialog fade show">
+          className="Modal_Bootstrap modal-dialog fade show"
+          >
           <ConversationModal
             requestClose={requestClose}
             users={users}

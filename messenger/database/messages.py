@@ -37,10 +37,10 @@ conversations_to_users = db.Table('conversations_to_users',
 
 class Conversation(TrackingModel):
 
-    display_name = db.Column(db.Text, default=lambda: str(uuid4()))
+    display_name = db.Column(db.Text(10), default=lambda: str(uuid4())[:10])
 
     users = db.relationship('User', secondary=conversations_to_users, lazy='subquery', backref=db.backref('conversations', lazy=True))
-    messages = db.relationship('Message')
+    messages = db.relationship('Message', cascade='all, delete-orphan')
 
     def lean(self):
         base = super().serialize()

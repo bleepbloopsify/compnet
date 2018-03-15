@@ -3,9 +3,13 @@ import { connect } from 'react-redux';
 
 import ConversationTab from './conversationtab';
 
+import {
+  requestUsers, requestConversations
+} from '../actions';
+
 class App extends React.Component {
-  constructor(props) {
-    super(props);
+  componentDidMount() {
+    this.props.onMount();
   }
   render() {
     return (
@@ -20,4 +24,13 @@ const mapStateToProps = (state, props) => {
   return {};
 }
 
-export default connect(mapStateToProps, null)(App)
+const mapDispatchToProps = dispatch => {
+  return {
+    onMount: () => {
+      dispatch(requestUsers());
+      dispatch(requestConversations());
+    },
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)

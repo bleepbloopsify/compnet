@@ -5,6 +5,7 @@ import ConversationSidebar from '../components/conversationtab';
 
 import ConversationRow from './conversationrow';
 import ModalRoot from './modalroot';
+import Conversation from './conversation';
 
 import { openCreateConversationModal } from '../actions';
 
@@ -35,9 +36,7 @@ class ConversationTab extends React.Component {
               top: 50,
             },
           }}>
-          <div className="container">
-           Hello
-          </div>
+          <Conversation />
         </ConversationSidebar>
         <ModalRoot />
       </div>

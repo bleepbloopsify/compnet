@@ -1,6 +1,8 @@
-import { combineReducers } from 'redux';
+import { combineReducers, applyMiddleware } from 'redux';
 
 import modal from './modal';
+import users from './users';
+import conversations from './conversations';
 
 import { SELECTED_CONVERSATION } from '../actions';
 
@@ -8,20 +10,6 @@ function selected_id(state = null, action) {
   switch(action.type){
   case SELECTED_CONVERSATION:
     return action.conversation_id;
-  default:
-    return state;
-  }
-}
-
-function users(state={1: {id:1, display_name:'leon', }, }, action) {
-  switch(action.type) {
-  default:
-    return state
-  }
-}
-
-function conversations(state={1: { id: 1, display_name: "hello", } }, action) {
-  switch(action.type) {
   default:
     return state;
   }

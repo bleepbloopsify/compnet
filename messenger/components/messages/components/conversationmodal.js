@@ -53,12 +53,13 @@ export default class ConversationModal extends React.Component {
                     user_ids: added_users
                   }).then(({data}) => {
                     this.setState({
-                      submitting: false
+                      submitting: false,
+                      added_users: [],
                     });
-                    console.log(data);
                   }).catch(() => {
                     this.setState({
-                      submitting: false
+                      submitting: false,
+                      added_users: false,
                     });
                   });
                 }}

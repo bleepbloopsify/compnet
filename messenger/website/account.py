@@ -76,8 +76,8 @@ def login():
         flash('Invalid credentials')
         return render_template('account/login.html')
 
-@login_required
 @account.route('/logout')
+@login_required
 def logout():
     del session['user_id']
     return redirect('/')

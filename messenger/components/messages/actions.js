@@ -1,10 +1,38 @@
 import axios from 'axios';
+import io from 'socket.io-client';
 
 export const SELECTED_CONVERSATION = 'SELECTED-CONVERSATION';
 export function selectConversation(conversation_id) {
   return {
     type: SELECTED_CONVERSATION,
     conversation_id: conversation_id,
+  };
+}
+
+export const START_REQUEST_MESSAGES = 'START-REQUEST-MESSAGES';
+export function startRequestMessages() {
+  return {
+    type: START_REQUEST_MESSAGES,
+  };
+}
+
+export const LOAD_CONVERSATION_MESSAGES = 'LOAD-CONVERSATION-MESSAGES';
+export function loadConversationMessages(conversation_id, messages) {
+  return {
+    type: LOAD_CONVERSATION_MESSAGES,
+    conversation_id: conversation_id,
+    messages: messages,
+  };
+}
+
+export function requestConversationMessages(conversation_id) {
+  return dispatch => {
+    dispatch(startRequestMessages());
+    axios.get(`/conversations/${conversation_id}/messages`)
+      .then(({data}) => {
+        console.log(data);
+        dispatch(loadConversationMessages(conversation_id, data));
+      });
   };
 }
 
@@ -75,4 +103,70 @@ export function requestUsers() {
         dispatch(loadUsers(users));
       });
   }
+}
+
+export const START_REQUEST_SELF = 'START-REQUEST-SELF';
+export function startRequestSelf() {
+  return {
+    type: START_REQUEST_SELF,
+  };
+}
+
+export const LOAD_SELF = 'LOAD-SELF';
+export function loadSelf(self) {
+  return {
+    type: LOAD_SELF,
+    self: self,
+  };
+}
+
+export function requestSelf() {
+  return dispatch => {
+    dispatch(startRequestSelf());
+
+    return axios.get('/users/self')
+      .then( ({data}) => {
+        console.log('data');
+        dispatch(loadSelf(data))
+      });
+  }
+}
+
+export const RECEIVE_MESSAGE = 'RECEIVE-MESSAGE';
+export function receiveMessage(conversation_id, message) {
+  return {
+    type: RECEIVE_MESSAGE,
+    conversation_id: conversation_id,
+    message: message
+  };
+}
+
+export const SUBSCRIBE_CONVERSATION = 'SUBSCRIBE-CONVERSATION';
+export function subscribeConversation(conversation_id) {
+  return {
+    type: SUBSCRIBE_CONVERSATION,
+    conversation_id: conversation_id,
+  };
+}
+
+export function connectSocket() {
+  return (dispatch, getState) => {
+    let { socket } = getState();
+    socket.on('new_message', (conversation_id, message) => {
+      console.log('received message');
+      console.log(conversation_id, message);
+      dispatch(receiveMessage(conversation_id, message));
+    });
+
+    return socket;
+  }
+}
+
+export const SEND_MESSAGE = 'SEND-MESSAGE';
+export function sendMessage(conversation_id, message){
+  return {
+    type: SEND_MESSAGE,
+    conversation_id: conversation_id,
+    message: message,
+  };
 }

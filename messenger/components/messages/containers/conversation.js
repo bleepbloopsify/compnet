@@ -1,7 +1,9 @@
 import React from 'react';
 import { connect} from 'react-redux';
 
-import Message from '../components/message';
+import Conversation from '../components/conversation';
+
+import { sendMessage } from '../actions';
 
 class ConversationContainer extends React.Component {
   constructor(props) {
@@ -24,14 +26,14 @@ class ConversationContainer extends React.Component {
       );
     }
 
+    const { createMessage } = this.props;
+    const { conversation } = this.props;
+
     return (
       <div className="container">
-        {Object.values(messages).map(message =>
-          <div key={message.id}
-            className="row">
-            <Message {...message} />
-          </div>
-        )}
+        <Conversation messages={messages}
+          conversation={conversation}
+          submitMessage={createMessage} />
       </div>
     );
   }
@@ -39,13 +41,14 @@ class ConversationContainer extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    messages: state.messages,
+    conversation: state.selected_id ? state.conversations[state.selected_id] || null : null,
+    messages: state.selected_id ? state.messages[state.selected_id] || null : null,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch, props) => {
   return {
-
+    createMessage: (conversation_id, message) => dispatch(sendMessage(conversation_id, message)),
   };
 };
 

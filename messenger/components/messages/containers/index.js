@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import ConversationTab from './conversationtab';
 
 import {
-  requestUsers, requestConversations
+  requestUsers, requestConversations, requestSelf, connectSocket
 } from '../actions';
 
 class App extends React.Component {
@@ -29,6 +29,8 @@ const mapDispatchToProps = dispatch => {
     onMount: () => {
       dispatch(requestUsers());
       dispatch(requestConversations());
+      dispatch(requestSelf());
+      dispatch(connectSocket());
     },
   };
 }

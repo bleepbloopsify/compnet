@@ -3,6 +3,9 @@ import { combineReducers, applyMiddleware } from 'redux';
 import modal from './modal';
 import users from './users';
 import conversations from './conversations';
+import self from './self';
+import messages from './messages';
+import socket from './socket';
 
 import { SELECTED_CONVERSATION } from '../actions';
 
@@ -20,4 +23,7 @@ export default combineReducers({
   conversations,
   modal,
   users,
+  self,
+  messages,
+  socket,
 });

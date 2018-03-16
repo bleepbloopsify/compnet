@@ -1,6 +1,6 @@
-from flask import jsonify, request, g
+from flask import jsonify, request, g, abort
 
-from database import db, Conversation, User
+from database import db, Conversation, User, Message
 from website.account import login_required_json
 
 from . import conversations
@@ -32,3 +32,12 @@ def delete(id):
     return jsonify({
         'success': True,
     })
+
+@conversations.route('/<id>/messages', methods=['GET'])
+@login_required_json
+def messages(id):
+    conversation = Conversation.query.get(id)
+    if not conversation:
+        return abort(404)
+
+    return jsonify([m.lean() for m in conversation.messages])

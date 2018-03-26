@@ -1,4 +1,7 @@
-import { START_REQUEST_CONVERSATION, LOAD_CONVERSATIONS} from '../actions';
+import {
+  START_CREATE_CONVERSATION, LOAD_CONVERSATIONS,
+  FINISH_CREATE_CONVERSATION
+} from '../actions';
 
 const initialState = {};
 
@@ -10,6 +13,13 @@ export default function conversations(state=initialState, action) {
       conversations[conversation.id] = conversation;
     });
     return conversations;
+  case FINISH_CREATE_CONVERSATION:
+    if (action.conversation) {
+      return Object.assign({}, conversations, {
+        [action.conversation.id]: conversation
+      });
+    }
+    return state;
   default:
     return state;
   }

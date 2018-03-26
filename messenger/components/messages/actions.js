@@ -149,12 +149,39 @@ export function subscribeConversation(conversation_id) {
   };
 }
 
+export const START_CREATE_CONVERSATION = 'START-CREATE-CONVERSATION';
+export function startCreateConversation() {
+  return {
+    type: START_CREATE_CONVERSATION,
+  };
+}
+
+export const FINISH_CREATE_CONVERSATION = 'FINISH-CREATE-CONVERSATION';
+export function finishCreateConversation(conversation) {
+  return {
+    type: FINISH_CREATE_CONVERSATION,
+    conversation: conversation,
+  };
+}
+
+export function createConversation(user_ids) {
+  return dispatch => {
+    dispatch(startCreateConversation());
+    return axios.post('/conversations', {
+      name: name,
+      user_ids: user_ids,
+    }).then(({data}) => {
+      dispatch(finishCreateConversation(data));
+    }).catch(() => {
+      dispatch(finishCreateConversation());
+    });
+  }
+}
+
 export function connectSocket() {
   return (dispatch, getState) => {
     let { socket } = getState();
     socket.on('new_message', (conversation_id, message) => {
-      console.log('received message');
-      console.log(conversation_id, message);
       dispatch(receiveMessage(conversation_id, message));
     });
 

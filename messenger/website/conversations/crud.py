@@ -10,6 +10,7 @@ from . import conversations
 def create():
 
     data = request.get_json()
+    print(data)
     user_ids = data['user_ids']
     new = Conversation()
     for user_id in user_ids:

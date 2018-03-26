@@ -1,7 +1,11 @@
-import { OPEN_CREATE_CONVERSATION_MODAL, CLOSE_CREATE_CONVERSATION_MODAL } from '../actions';
+import {
+  OPEN_CREATE_CONVERSATION_MODAL, CLOSE_CREATE_CONVERSATION_MODAL,
+  START_CREATE_CONVERSATION, FINISH_CREATE_CONVERSATION,
+} from '../actions';
 
 const initialState = {
   open: false,
+  submitting: false,
 }
 
 export default function modal(state = initialState, action) {
@@ -13,6 +17,14 @@ export default function modal(state = initialState, action) {
   case CLOSE_CREATE_CONVERSATION_MODAL:
     return Object.assign({}, state, {
       open: false,
+    });
+  case START_CREATE_CONVERSATION:
+    return Object.assign({}, state, {
+      submitting: true,
+    });
+  case FINISH_CREATE_CONVERSATION:
+    return Object.assign({}, state, {
+      submitting: false,
     });
   default:
     return state;

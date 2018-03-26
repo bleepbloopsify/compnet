@@ -1,5 +1,4 @@
 import React from 'react';
-import axios from 'axios';
 
 import Searchbar from './searchbar';
 
@@ -8,14 +7,14 @@ export default class ConversationModal extends React.Component {
     super(props);
 
     this.state = {
+      name: '',
       added_users: [],
-      submitting: false,
     };
   }
   render() {
-    let { users } = this.props;
-    let { requestClose } = this.props;
-    let { submitting, added_users } = this.state;
+    let { users, submitting } = this.props;
+    let { requestClose, createConversation } = this.props;
+    let { name, added_users } = this.state;
 
     return (
       <div className="modal-content">
@@ -26,6 +25,12 @@ export default class ConversationModal extends React.Component {
           </button>
         </div>
           <div className="modal-body">
+            <div className="form-group">
+              <label htmlFor="name" className="form-control-label">Conversation Name</label>
+              <input type="text" className="form-control"
+                onChange={(e)=>this.setState({name: e.target.value})}
+                value={name} />
+            </div>
             <div className="form-group">
               <label htmlFor="added_users" className="form-control-label">Added Users</label>
               <div className="list-group">
@@ -45,24 +50,7 @@ export default class ConversationModal extends React.Component {
             <div className="modal-footer">
               <button type="button"
                 disabled={submitting}
-                onClick={() => {
-                  this.setState({
-                    submitting: true,
-                  });
-                  axios.post('/conversations', {
-                    user_ids: added_users
-                  }).then(({data}) => {
-                    this.setState({
-                      submitting: false,
-                      added_users: [],
-                    });
-                  }).catch(() => {
-                    this.setState({
-                      submitting: false,
-                      added_users: false,
-                    });
-                  });
-                }}
+                onClick={()=>createConversation(name, added_users)}
                 className="btn btn-primary">
                 {submitting
                   ? <i className="fa fa-spinner fa-spin" />

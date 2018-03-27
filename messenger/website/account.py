@@ -1,8 +1,10 @@
 from flask import Blueprint, render_template, request, abort, jsonify, session, redirect, flash, g, url_for
+from flask_mail import Message
 from bcrypt import hashpw, checkpw, gensalt
 from functools import wraps
 
-from database import db, User
+from database import db, User, PasswordResetRequest
+from mailing import mail, async_send_message
 
 def login_required(f):
     @wraps(f)
@@ -68,7 +70,7 @@ def login():
     user = User.query.filter(User.email == request.form['email']).first()
     if not user:
         flash('Invalid credentials')
-        return render_template('login.html')
+        return render_template('account/login.html')
     if checkpw(request.form['password'].encode('utf-8'), user.passhash.encode('utf-8')):
         session['user_id'] = user.id
         return redirect('/')
@@ -82,3 +84,49 @@ def logout():
     del session['user_id']
     return redirect('/')
 
+@account.route('/password_reset', methods=['GET', 'POST'])
+def password_reset():
+    if request.method == 'GET':
+        return render_template('account/password_reset.html')
+
+    if request.method == 'POST':
+        if 'email' not in request.values:
+            flash('Missing field')
+            return render_template('account/password_reset.html')
+        user = User.query.filter(User.email == request.values['email']).first()
+        if not user:
+            flash('No such user')
+            return render_template('account/password_reset.html')
+        req = PasswordResetRequest(user_id=user.id)
+        db.session.add(req)
+        db.session.commit()
+
+        message = Message(
+            "Password Reset",
+            recipients=[user.email],
+            html=render_template('emails/password_reset.html', code=req.code)
+        )
+        print(message)
+        async_send_message(message)
+
+        return render_template('account/password_reset_sent.html')
+
+@account.route('/reset/<string:code>', methods=['GET', 'POST'])
+def reset(code):
+    req = PasswordResetRequest.query.filter(PasswordResetRequest.code == code).first()
+    if not req:
+        return abort(404)
+    if request.method == 'GET':
+        return render_template('account/password_reset_approved.html')
+
+    if request.method == 'POST':
+
+        if 'password' not in request.values:
+            flash('Missing required field')
+            return render_template('account/password_reset_approved.html')
+
+        req.user.passhash = hashpw(request.values['password'].encode('utf-8'), gensalt())
+        db.session.add(req.user)
+        PasswordResetRequest.query.filter(PasswordResetRequest.user_id == req.user.id).delete()
+        db.session.commit()
+        return render_template('account/password_reset_finished.html')

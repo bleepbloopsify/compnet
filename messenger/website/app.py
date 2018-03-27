@@ -3,6 +3,7 @@ from flask import Flask, render_template, session, g
 from sqlalchemy_utils import create_database, database_exists
 from flask_migrate import Migrate
 
+from mailing import mail
 from database import db, User
 from sockets import socketio
 
@@ -14,6 +15,9 @@ def create_app():
 
     app = Flask(__name__)
     app.secret_key = env.get('SESSION_SECRET_KEY') or 'keyboard cat'
+
+    app.config.from_pyfile('default.cfg')
+    app.config.from_pyfile('local.cfg', silent=True)
 
     @app.before_request
     def load_user():
@@ -35,14 +39,15 @@ def create_app():
     app.register_blueprint(conversations, url_prefix='/conversations')
     app.register_blueprint(users, url_prefix='/users')
 
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['SQLALCHEMY_DATABASE_URI'] = db_url = env.get('DATABASE_URI') or "mysql+pymysql://test:t3stp@ss@0.0.0.0/messenger?charset=utf8mb4"
+    db_url = app.config['SQLALCHEMY_DATABASE_URI']
 
     db.init_app(app)
     if not database_exists(db_url):
         create_database(db_url)
     db.create_all(app=app)
     migrate = Migrate(app, db)
+
+    mail.init_app(app)
 
     socketio.init_app(app)
     return app

@@ -1,20 +1,20 @@
-import { LOAD_CONVERSATION_MESSAGES, RECEIVE_MESSAGE } from '../actions';
+import {
+  NEW_MESSAGE, LOAD_MESSAGES
+} from '../actions/messages';
 
-const initialState = {
-};
+const initialState = {};
 
-export default function messages(state=initialState, action) {
+export default function(state=initialState, action) {
   switch(action.type) {
-  case LOAD_CONVERSATION_MESSAGES:
+  case NEW_MESSAGE:
+    return Object.assign({}, state, {
+      [action.conversation_id]: [...state[action.conversation_id], action.message]
+    });
+  case LOAD_MESSAGES:
     return Object.assign({}, state, {
       [action.conversation_id]: action.messages,
-    });
-    break;
-  case RECEIVE_MESSAGE:
-    return Object.assign({}, state, {
-      [action.conversation_id]: [...state[action.conversation_id], action.message],
     });
   default:
     return state;
   }
-}
+};

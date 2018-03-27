@@ -1,38 +1,25 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import ConversationTab from './conversationtab';
+import ModalRoot from './modalroot';
 
-import {
-  requestUsers, requestConversations, requestSelf, connectSocket
-} from '../actions';
-
-class App extends React.Component {
-  componentDidMount() {
-    this.props.onMount();
-  }
+class Root extends React.Component {
   render() {
     return (
       <div>
-        <ConversationTab />
+        <ConversationsPanel />
+        <ModalRoot />
       </div>
     );
   }
 }
 
-const mapStateToProps = (state, props) => {
-  return {};
-}
+const mapStateToProps = state => {
 
-const mapDispatchToProps = dispatch => {
-  return {
-    onMount: () => {
-      dispatch(requestUsers());
-      dispatch(requestConversations());
-      dispatch(requestSelf());
-      dispatch(connectSocket());
-    },
-  };
-}
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(App)
+const mapDispatchToProps = dispatch => ({
+
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Root);

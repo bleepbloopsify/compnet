@@ -1,25 +1,14 @@
 import {
-  START_CREATE_CONVERSATION, LOAD_CONVERSATIONS,
-  FINISH_CREATE_CONVERSATION
-} from '../actions';
+  CONVERSATIONS_TO_STATE,
+} from '../actions/conversations';
 
-const initialState = {};
+const initialState = {
+};
 
-export default function conversations(state=initialState, action) {
+export default function(state=initialState, action) {
   switch(action.type) {
-  case LOAD_CONVERSATIONS:
-    let conversations = {};
-    action.conversations.map(conversation => {
-      conversations[conversation.id] = conversation;
-    });
-    return conversations;
-  case FINISH_CREATE_CONVERSATION:
-    if (action.conversation) {
-      return Object.assign({}, conversations, {
-        [action.conversation.id]: conversation
-      });
-    }
-    return state;
+  case CONVERSATIONS_TO_STATE:
+    return action.conversations;
   default:
     return state;
   }

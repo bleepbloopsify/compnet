@@ -10,9 +10,9 @@ from . import conversations
 def create():
 
     data = request.get_json()
-    print(data)
     user_ids = data['user_ids']
-    new = Conversation()
+    name = data.get('name')
+    new = Conversation(display_name=name)
     for user_id in user_ids:
         user = User.query.get(user_id)
         new.users.append(user)

@@ -7,9 +7,11 @@ import thunkMiddleware from 'redux-thunk';
 import { createLogger } from 'redux-logger';
 
 import reducer from './reducers';
+import App from './containers';
 
+let loggerMiddleware = createLogger();
 
-let store = createStore(
+let store=createStore(
   reducer,
   applyMiddleware(
     thunkMiddleware,
@@ -19,6 +21,7 @@ let store = createStore(
 
 render(
   <Provider store={store}>
+    <App />
   </Provider>,
-  document.getElementById('react-container'),
+  document.getElementById('react-container')
 );

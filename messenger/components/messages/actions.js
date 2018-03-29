@@ -164,16 +164,15 @@ export function finishCreateConversation(conversation) {
   };
 }
 
-export function createConversation(user_ids) {
+export function createConversation(name, user_ids) {
   return dispatch => {
     dispatch(startCreateConversation());
     return axios.post('/conversations', {
       name: name,
       user_ids: user_ids,
     }).then(({data}) => {
-      dispatch(finishCreateConversation(data));
-    }).catch(() => {
-      dispatch(finishCreateConversation());
+      console.log(data);
+      dispatch(finishCreateConversation(data.conversation));
     });
   }
 }

@@ -48,7 +48,7 @@ export default class ConversationModal extends React.Component {
               </div>
             </div>
             <div className="modal-footer">
-              <button type="button"
+              <button type="submit"
                 disabled={submitting}
                 onClick={()=>createConversation(name, added_users)}
                 className="btn btn-primary">

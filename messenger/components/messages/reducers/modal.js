@@ -25,6 +25,7 @@ export default function modal(state = initialState, action) {
   case FINISH_CREATE_CONVERSATION:
     return Object.assign({}, state, {
       submitting: false,
+      open: false,
     });
   default:
     return state;

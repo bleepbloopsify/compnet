@@ -15,8 +15,8 @@ export default function conversations(state=initialState, action) {
     return conversations;
   case FINISH_CREATE_CONVERSATION:
     if (action.conversation) {
-      return Object.assign({}, conversations, {
-        [action.conversation.id]: conversation
+      return Object.assign({}, state, {
+        [action.conversation.id]: action.conversation
       });
     }
     return state;

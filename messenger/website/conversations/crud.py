@@ -24,15 +24,20 @@ def create():
         'conversation': new.serialize(),
     })
 
-@conversations.route('/<id>', methods=['DELETE'])
+@conversations.route('/<id>', methods=['GET', 'DELETE'])
 @login_required_json
-def delete(id):
-    db.session.delete(Conversation.query.get(id))
-    db.session.commit()
-
-    return jsonify({
-        'success': True,
-    })
+def singular(id):
+    conversation = Conversation.query.get(id)
+    if not conversation:
+        return abort(404)
+    if request.method == 'GET':
+        return jsonify(conversation.serialize())
+    if request.method == 'DELETE':
+        db.session.delete(conversation)
+        db.session.commit()
+        return jsonify({
+            'success': True,
+        })
 
 @conversations.route('/<id>/messages', methods=['GET'])
 @login_required_json

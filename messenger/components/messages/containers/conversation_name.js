@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+//import 'conversation_name.scss';
+
 class ConversationName extends Component {
   render() {
     return (

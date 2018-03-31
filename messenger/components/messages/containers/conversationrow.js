@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { requestConversationMessages, selectConversation } from '../actions';
+import { requestConversationMessages, selectConversation, requestConversationDetails } from '../actions';
 
 class ConversationRow extends React.Component {
   constructor(props) {
@@ -36,6 +36,7 @@ const mapDispatchToProps = (dispatch, props) => {
     onClick: () => {
       dispatch(requestConversationMessages(props.id));
       dispatch(selectConversation(props.id));
+      dispatach(requestConversationDetails(props.id));
     },
   };
 }

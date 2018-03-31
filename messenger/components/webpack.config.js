@@ -8,6 +8,7 @@ module.exports = {
   cache: true,
   entry: {
       'messages': path.resolve(SOURCE_DIR, 'messages'),
+      'styles': path.resolve(SOURCE_DIR, 'styles'),
   },
   output: {
     filename: '[name].bundle.js',
@@ -38,7 +39,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.jsx?$/,
+        test: /\.js?$/,
         loader: 'babel-loader',
         include: path.resolve(SOURCE_DIR),
         query: {

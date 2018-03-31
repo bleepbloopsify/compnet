@@ -36,6 +36,34 @@ export function requestConversationMessages(conversation_id) {
   };
 }
 
+export const START_LOAD_CONVERSATION_DETAILS = 'START-LOAD-CONVERSATION-DETAILS';
+export function startLoadConversationDetails(conversation_id) {
+  return {
+    type: START_LOAD_CONVERSATION_DETAILS,
+    conversation_id,
+  };
+}
+
+export const CONVERSATION_DETAILS = 'CONVERSATION-DETAILS';
+export function conversationDetails(conversation_id, details) {
+  return {
+    type: CONVERSATION_DETAILS,
+    conversation_id,
+    details,
+  };
+}
+
+export function requestConversationDetails(conversation_id) {
+  return dispatch => {
+    dispatch(startLoadConversationDetails(conversation_id));
+
+    axios.get(`/conversations/${conversation_id}`)
+      .then( ({data}) => {
+        dispatch(conversationDetails(conversation_id, data));
+      });
+  }
+}
+
 export const OPEN_CREATE_CONVERSATION_MODAL = 'OPEN-CREATE-CONVERSATION-MODAL';
 export function openCreateConversationModal() {
   return {

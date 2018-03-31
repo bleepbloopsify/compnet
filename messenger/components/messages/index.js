@@ -9,6 +9,8 @@ import { createLogger } from 'redux-logger';
 import reducer from './reducers';
 import App from './containers';
 
+//import '/messenger/website/static/dist/css/styles.css';
+
 let loggerMiddleware = createLogger();
 
 let store=createStore(

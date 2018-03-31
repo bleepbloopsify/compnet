@@ -6,6 +6,7 @@ import conversations from './conversations';
 import self from './self';
 import messages from './messages';
 import socket from './socket';
+import details from './details';
 
 import { SELECTED_CONVERSATION } from '../actions';
 
@@ -26,4 +27,5 @@ export default combineReducers({
   self,
   messages,
   socket,
+  details,
 });
